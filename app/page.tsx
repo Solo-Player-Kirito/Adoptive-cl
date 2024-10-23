@@ -37,10 +37,10 @@ export default function HomePage() {
               </div>
               <div className="flex space-x-4">
                 <Button asChild className="bg-pink-500 hover:bg-pink-600 text-white">
-                  <Link href="/auth">Get Started</Link>
+                  <Link href="/auth/signup">Get Started</Link>
                 </Button>
                 <Button asChild variant="outline" className="border-pink-300 text-pink-700 hover:bg-pink-100">
-                  <Link href="#learn-more">Learn More</Link>
+                  <Link href="/auth/login">Login</Link>
                 </Button>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function HomePage() {
                 </p>
               </div>
               <Button asChild variant="secondary" size="lg" className="bg-white text-pink-600 hover:bg-pink-100">
-                <Link href="/auth">Sign Up Now</Link>
+                <Link href="/auth/signup">Sign Up Now</Link>
               </Button>
             </div>
           </div>

@@ -107,8 +107,8 @@ export default function LoginPage() {
               </Link>
             </div>
             <div className="text-sm text-center text-pink-600">
-              Don't have an account?{" "}
-              <Link href="/signup" className="text-pink-700 font-semibold hover:underline">
+              Don&apos;t have an account?{" "}
+              <Link href="/auth/signup" className="text-pink-700 font-semibold hover:underline">
                 Sign up
               </Link>
             </div>

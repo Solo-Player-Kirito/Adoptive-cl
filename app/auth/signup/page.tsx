@@ -183,7 +183,7 @@ export default function SignupPage() {
           <CardFooter>
             <p className="text-sm text-center text-pink-600 w-full">
               Already have an account?{" "}
-              <Link href="/login" className="text-pink-700 font-semibold hover:underline">
+              <Link href="/auth/login" className="text-pink-700 font-semibold hover:underline">
                 Log in
               </Link>
             </p>
