@@ -1,101 +1,135 @@
-import Image from "next/image";
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Heart, Search, Calendar, UserPlus } from "lucide-react"
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+    <div className="flex flex-col min-h-screen bg-pink-50">
+      <header className="px-4 lg:px-6 h-14 flex items-center justify-between bg-white shadow-sm">
+        <Link className="flex items-center justify-center" href="/">
+          <Heart className="h-6 w-6 text-pink-500" />
+          <span className="ml-2 text-2xl font-bold text-pink-600">ADOPTIVE</span>
+        </Link>
+        <nav className="flex gap-4 sm:gap-6">
+          <Link className="text-sm font-medium hover:text-pink-600 hover:underline underline-offset-4" href="#features">
+            Features
+          </Link>
+          <Link className="text-sm font-medium hover:text-pink-600 hover:underline underline-offset-4" href="#about">
+            About
+          </Link>
+          <Link className="text-sm font-medium hover:text-pink-600 hover:underline underline-offset-4" href="/contact">
+            Contact
+          </Link>
+        </nav>
+      </header>
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-pink-100 to-pink-50">
+          <div className="container px-4 md:px-6 mx-auto">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-pink-800">
+                  Connecting Hearts, Creating Families
+                </h1>
+                <p className="mx-auto max-w-[700px] text-pink-700 md:text-xl">
+                  ADOPTIVE simplifies the adoption process, helping you find and connect with children waiting for their forever homes.
+                </p>
+              </div>
+              <div className="flex space-x-4">
+                <Button asChild className="bg-pink-500 hover:bg-pink-600 text-white">
+                  <Link href="/auth">Get Started</Link>
+                </Button>
+                <Button asChild variant="outline" className="border-pink-300 text-pink-700 hover:bg-pink-100">
+                  <Link href="#learn-more">Learn More</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-white">
+          <div className="container px-4 md:px-6 mx-auto">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12 text-pink-800">Our Features</h2>
+            <div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
+              <Card className="bg-pink-50 border-pink-100 flex flex-col items-center text-center">
+                <CardHeader>
+                  <Search className="h-10 w-10 text-pink-500 mb-2" />
+                  <CardTitle className="text-pink-700">Orphanage Search</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-pink-600">
+                    Easily find orphanages based on location criteria such as city, state, or country.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="bg-pink-50 border-pink-100 flex flex-col items-center text-center">
+                <CardHeader>
+                  <UserPlus className="h-10 w-10 text-pink-500 mb-2" />
+                  <CardTitle className="text-pink-700">Child Profiles</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-pink-600">
+                    Access comprehensive profiles of children, including photos, videos, and personal stories.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="bg-pink-50 border-pink-100 flex flex-col items-center text-center">
+                <CardHeader>
+                  <Calendar className="h-10 w-10 text-pink-500 mb-2" />
+                  <CardTitle className="text-pink-700">Appointment Scheduling</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-pink-600">
+                    Book visits to orphanages directly through our platform with ease.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+        <section id="about" className="w-full py-12 md:py-24 lg:py-32 bg-pink-100">
+          <div className="container px-4 md:px-6 mx-auto">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-pink-800">About ADOPTIVE</h2>
+                <p className="mx-auto max-w-[700px] text-pink-700 md:text-xl">
+                  ADOPTIVE is a digital adoption assistance platform designed to centralize the adoption process. We make it easier for prospective parents to connect with orphanages and explore profiles of children available for adoption.
+                </p>
+              </div>
+              <Button asChild variant="outline" className="border-pink-300 text-pink-700 hover:bg-pink-200">
+                <Link href="/about">Learn More About Us</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+        <section id="cta" className="w-full py-12 md:py-24 lg:py-32 bg-pink-500 text-white">
+          <div className="container px-4 md:px-6 mx-auto">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Ready to Start Your Journey?</h2>
+                <p className="mx-auto max-w-[600px] text-pink-100 md:text-xl">
+                  Join ADOPTIVE today and take the first step towards growing your family through adoption.
+                </p>
+              </div>
+              <Button asChild variant="secondary" size="lg" className="bg-white text-pink-600 hover:bg-pink-100">
+                <Link href="/auth">Sign Up Now</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      <footer className="py-6 w-full shrink-0 bg-white border-t border-pink-200">
+        <div className="container px-4 md:px-6 mx-auto flex flex-col sm:flex-row justify-between items-center">
+          <p className="text-xs text-pink-600 text-center sm:text-left">© 2024 ADOPTIVE. All rights reserved.</p>
+          <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
+            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/terms">
+              Terms of Service
+            </Link>
+            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
+              Privacy
+            </Link>
+          </nav>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
