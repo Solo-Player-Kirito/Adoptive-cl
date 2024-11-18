@@ -35,7 +35,7 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="flex space-x-4">
-                <Link href="/auth" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-pink-500 text-white hover:bg-pink-600 h-10 py-2 px-4">
+                <Link href="/auth/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-pink-500 text-white hover:bg-pink-600 h-10 py-2 px-4">
                   Get Started
                 </Link>
               </div>
@@ -55,9 +55,9 @@ export default function HomePage() {
               </div>
               <div className="flex flex-col items-center text-center p-6 bg-pink-50 rounded-lg border border-pink-100">
                 <UserPlus className="h-10 w-10 text-pink-500 mb-2" />
-                <h3 className="text-xl font-bold text-pink-700 mb-2">Child Profiles</h3>
+                <h3 className="text-xl font-bold text-pink-700 mb-2">Extensive Profiles</h3>
                 <p className="text-pink-600">
-                  Access comprehensive profiles of children, including photos, videos, and personal stories.
+                  Access comprehensive profiles of orphanages, including photos, videos, and learn more about their volunteering activities.
                 </p>
               </div>
               <div className="flex flex-col items-center text-center p-6 bg-pink-50 rounded-lg border border-pink-100">
@@ -94,7 +94,7 @@ export default function HomePage() {
                   Join ADOPTIVE today and take the first step towards growing your family through adoption.
                 </p>
               </div>
-              <Link href="/auth" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-white text-pink-600 hover:bg-pink-100 h-10 py-2 px-4">
+              <Link href="/auth/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-white text-pink-600 hover:bg-pink-100 h-10 py-2 px-4">
                 Sign Up Now
               </Link>
             </div>
