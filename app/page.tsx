@@ -108,8 +108,11 @@ export default function HomePage() {
             <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/terms">
               Terms of Service
             </Link>
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
+             <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
               Privacy
+            </Link> 
+            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/admin/login">
+              Admin Dashboard
             </Link>
           </nav>
         </div>
