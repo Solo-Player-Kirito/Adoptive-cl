@@ -1,37 +1,76 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from "next/link"
 import { Search, MapPin } from "lucide-react"
 import Navbar from '@/components/NavBar'
+import Footer from '@/components/Footer'
 
-// Mock data for orphanages
-const orphanages = [
-  { id: 1, name: "Sunshine Orphanage", location: "Model Town, Jalandhar", visitingHours: "10 AM - 5 PM", volunteeringInfo: "Accepting volunteers and donations" },
-  { id: 2, name: "Hope Haven", location: "Urban Estate Phase II, Jalandhar", visitingHours: "9 AM - 4 PM", volunteeringInfo: "Open for volunteering; donations welcome" },
-  { id: 3, name: "Little Angels Home", location: "Basti Sheikh, Jalandhar", visitingHours: "10 AM - 6 PM", volunteeringInfo: "Volunteers needed; accepting donations" },
-  { id: 4, name: "Rainbow Kids Center", location: "Adarsh Nagar, Jalandhar", visitingHours: "11 AM - 5 PM", volunteeringInfo: "Volunteering opportunities available; donations appreciated" },
-  { id: 5, name: "Loving Hearts Orphanage", location: "Maqsudan, Jalandhar", visitingHours: "10 AM - 4 PM", volunteeringInfo: "Accepting both volunteers and donations" },
-]
+export const formatTime = (timeString) => {
+  const [hours, minutes] = timeString.split(':').map(Number)
+  const date = new Date()
+  date.setHours(hours, minutes)
+
+  return new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  }).format(date)
+}
 
 export default function OrphanageSearchPage() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState(orphanages)
+  const [searchResults, setSearchResults] = useState([])
+  const [orphanages, setOrphanages] = useState([])
+  const [error, setError] = useState('')
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const fetchOrphanages = async () => {
+      try {
+        const token = localStorage.getItem('authTokenUser')
+
+        if (!token) {
+          setError('Unauthorized access. Please log in.')
+          return
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orphanages`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch orphanages')
+        }
+
+        const data = await response.json()
+        setOrphanages(data)
+        setSearchResults(data) // Set initial search results
+      } catch (error) {
+        console.error('Error fetching orphanages:', error)
+        setError(error.message || 'An unexpected error occurred.')
+      }
+    }
+
+    fetchOrphanages()
+  }, [])
+
+  const handleSearch = (e) => {
     e.preventDefault()
-    const results = orphanages.filter(orphanage => 
+    const results = orphanages.filter(orphanage =>
       orphanage.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      orphanage.location.toLowerCase().includes(searchTerm.toLowerCase())
+      orphanage.address.toLowerCase().includes(searchTerm.toLowerCase())
     )
     setSearchResults(results)
   }
 
   return (
     <div className="flex flex-col min-h-screen bg-pink-50">
-      <Navbar /> 
+      <Navbar />
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-pink-800 mb-6 text-center">Find Nearby Orphanages</h1>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSearch} className="mb-8">
           <div className="flex items-center justify-center">
             <input
@@ -55,12 +94,12 @@ export default function OrphanageSearchPage() {
               <h2 className="text-xl font-semibold text-pink-700 mb-2">{orphanage.name}</h2>
               <div className="flex items-center text-pink-600 mb-2">
                 <MapPin className="h-4 w-4 mr-2" />
-                <span>{orphanage.location}</span>
+                <span>{orphanage.address}</span>
               </div>
-              <p className="text-pink-600 mb-2">Visiting Hours: {orphanage.visitingHours}</p>
+              <p className="text-pink-600 mb-2">Visiting Hours: {formatTime(orphanage.visiting_hours_start)} To {formatTime(orphanage.visiting_hours_end)}</p>
               <p className="text-pink-600 mb-4">{orphanage.volunteeringInfo}</p>
               <Link
-                href={`/orphanage/${orphanage.id}`}
+                href={`/schedule?id=${orphanage.id}`}
                 className="inline-block w-full text-center py-2 px-4 bg-pink-100 text-pink-700 rounded-md hover:bg-pink-200 transition-colors duration-300"
               >
                 View Details
@@ -68,23 +107,11 @@ export default function OrphanageSearchPage() {
             </div>
           ))}
         </div>
-        {searchResults.length === 0 && (
+        {searchResults.length === 0 && !error && (
           <p className="text-center text-pink-600 mt-8">No orphanages found. Please try a different search term.</p>
         )}
       </main>
-      <footer className="py-6 w-full shrink-0 bg-white border-t border-pink-200">
-        <div className="container px-4 md:px-6 mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-pink-600 text-center sm:text-left">© 2024 ADOPTIVE. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/terms">
-              Terms of Service
-            </Link>
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
-              Privacy
-            </Link>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

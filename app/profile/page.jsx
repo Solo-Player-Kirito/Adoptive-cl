@@ -1,59 +1,123 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from "next/link"
 import { User, Mail, Phone, Calendar, Edit, Eye, EyeOff } from 'lucide-react'
 import Navbar from '@/components/NavBar'
-
-// Mock user data
-const initialUserData = {
-  name: "John Doe",
-  email: "john.doe@example.com",
-  phone: "+1 (555) 123-4567"
-}
-
-// Mock scheduling data
-const schedulings = [
-  { id: 1, orphanage: "Sunshine Orphanage", date: "2024-03-15", time: "10:00 AM" },
-  { id: 2, orphanage: "Hope Haven", date: "2024-03-20", time: "2:00 PM" },
-  { id: 3, orphanage: "Little Angels Home", date: "2024-03-25", time: "11:30 AM" },
-]
+import { useRouter } from 'next/navigation'
+import Footer from '@/components/Footer'
 
 export default function UserProfilePage() {
-  const [userData, setUserData] = useState(initialUserData)
-  const [isEditingName, setIsEditingName] = useState(false)
+
+  const router = useRouter();
+
+  const [userData, setUserData] = useState(null)
   const [isEditingPassword, setIsEditingPassword] = useState(false)
-  const [newName, setNewName] = useState(userData.name)
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [currentPassword, setCurrentPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [schedulings, setSchedulings] = useState([])
 
-  const handleNameSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setUserData({ ...userData, name: newName })
-    setIsEditingName(false)
-    setSuccess('Name updated successfully')
-    setTimeout(() => setSuccess(''), 3000)
-  }
+  // Fetch user data and schedulings on load
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('authTokenUser')
+      if (!token) {
+        setError('Unauthorized. Please log in.')
+        router.push('/auth/login');
+        return
+      }
 
-  const handlePasswordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data')
+        }
+
+        const data = await response.json()
+        setUserData(data)
+
+        // Fetch schedulings after user data is loaded
+        fetchSchedulings(token)
+      } catch (error) {
+        setError(error.message)
+      }
+    }
+
+    const fetchSchedulings = async (token) => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/schedules`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch schedulings')
+        }
+
+        const data = await response.json()
+        setSchedulings(data)
+      } catch (error) {
+        setError(error.message)
+      }
+    }
+
+    fetchUserData()
+  }, [])
+
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault()
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match')
       return
     }
-    setIsEditingPassword(false)
-    setNewPassword('')
-    setConfirmPassword('')
-    setSuccess('Password updated successfully')
-    setTimeout(() => setSuccess(''), 3000)
+
+    const token = localStorage.getItem('authTokenUser')
+    if (!token) {
+      setError('Unauthorized. Please log in.')
+      return
+    }
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ new_password: newPassword, current_password: currentPassword }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Invalid Credentials. Failed to update password')
+      }
+
+      setIsEditingPassword(false)
+      setNewPassword('')
+      setConfirmPassword('')
+      setSuccess('Password updated successfully')
+      setTimeout(() => setSuccess(''), 3000)
+    } catch (error) {
+      setError(error.message)
+    }
+  }
+
+  if (!userData) {
+    return <div className="text-center text-pink-500">Loading...</div>
   }
 
   return (
     <div className="flex flex-col min-h-screen bg-pink-50">
-    <Navbar />
+      <Navbar />
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-pink-800 mb-6">User Profile</h1>
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -62,32 +126,9 @@ export default function UserProfilePage() {
               <User className="h-5 w-5 text-pink-500 mr-2" />
               <span className="text-lg font-semibold text-pink-700">Name:</span>
             </div>
-            {isEditingName ? (
-              <form onSubmit={handleNameSubmit} className="flex items-center">
-                <input
-                  type="text"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  className="flex-grow h-10 px-3 rounded-md border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                />
-                <button
-                  type="submit"
-                  className="ml-2 px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
-                >
-                  Save
-                </button>
-              </form>
-            ) : (
-              <div className="flex items-center">
-                <span className="text-pink-600">{userData.name}</span>
-                <button
-                  onClick={() => setIsEditingName(true)}
-                  className="ml-2 text-pink-500 hover:text-pink-600"
-                >
-                  <Edit className="h-4 w-4" />
-                </button>
-              </div>
-            )}
+            <div className="flex items-center">
+              <span className="text-pink-600">{userData.name}</span>
+            </div>
           </div>
           <div className="mb-4">
             <div className="flex items-center mb-2">
@@ -142,6 +183,18 @@ export default function UserProfilePage() {
                     className="w-full h-10 px-3 rounded-md border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                   />
                 </div>
+                <div>
+                  <label htmlFor="currentPassword" className="block text-sm font-medium text-pink-700">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="w-full h-10 px-3 rounded-md border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  />
+                </div>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
@@ -161,6 +214,8 @@ export default function UserProfilePage() {
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
         </div>
+
+        {/* My Schedulings Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-pink-800 mb-4">My Schedulings</h2>
           {schedulings.length > 0 ? (
@@ -169,10 +224,12 @@ export default function UserProfilePage() {
                 <li key={scheduling.id} className="border-b border-pink-100 pb-4 last:border-b-0">
                   <div className="flex items-center mb-2">
                     <Calendar className="h-5 w-5 text-pink-500 mr-2" />
-                    <span className="font-semibold text-pink-700">{scheduling.orphanage}</span>
+                    <Link href={`schedule?id=${scheduling.orphanage_id}`}>
+                      <span className="font-semibold text-pink-700">{scheduling.orphanage_name}</span>
+                    </Link>
                   </div>
                   <div className="text-pink-600">
-                    Date: {scheduling.date} | Time: {scheduling.time}
+                    Date And Time: {scheduling.scheduled_at}
                   </div>
                 </li>
               ))}
@@ -182,19 +239,7 @@ export default function UserProfilePage() {
           )}
         </div>
       </main>
-      <footer className="py-6 w-full shrink-0 bg-white border-t border-pink-200">
-        <div className="container px-4 md:px-6 mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-pink-600 text-center sm:text-left">© 2024 ADOPTIVE. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/terms">
-              Terms of Service
-            </Link>
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
-              Privacy
-            </Link>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

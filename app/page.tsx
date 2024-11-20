@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Heart, Search, Calendar, UserPlus } from "lucide-react"
+import Footer from "@/components/Footer"
 
 export default function HomePage() {
   return (
@@ -35,8 +36,8 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="flex space-x-4">
-                <Link href="/auth/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-pink-500 text-white hover:bg-pink-600 h-10 py-2 px-4">
-                  Get Started
+                <Link href="/auth/login" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-pink-500 text-white hover:bg-pink-600 h-10 py-2 px-4">
+                Login Here
                 </Link>
               </div>
             </div>
@@ -101,22 +102,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-      <footer className="py-6 w-full shrink-0 bg-white border-t border-pink-200">
-        <div className="container px-4 md:px-6 mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-pink-600 text-center sm:text-left">© 2024 ADOPTIVE. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/terms">
-              Terms of Service
-            </Link>
-             <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
-              Privacy
-            </Link> 
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/admin/login">
-              Admin Dashboard
-            </Link>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

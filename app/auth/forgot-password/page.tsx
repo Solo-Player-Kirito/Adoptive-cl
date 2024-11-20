@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from "next/link"
 import { Heart } from "lucide-react"
+import Footer from '@/components/Footer'
 
 export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -30,13 +31,27 @@ export default function ForgotPasswordPage() {
     }
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL // Use your API base URL
 
-      console.log('Password reset requested for:', email)
+      const response = await fetch(`${apiUrl}/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send reset link. Please try again.')
+      }
+
+      const data = await response.json()
+      console.log('Password reset response:', data)
+
       setSuccess(true)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Password reset error:', error)
-      setError('An error occurred. Please try again.')
+      setError(error.message || 'An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -100,19 +115,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
       </main>
-      <footer className="py-6 w-full shrink-0 bg-white border-t border-pink-200">
-        <div className="container px-4 md:px-6 mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-pink-600 text-center sm:text-left">© 2024 ADOPTIVE. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/terms">
-              Terms of Service
-            </Link>
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
-              Privacy
-            </Link>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

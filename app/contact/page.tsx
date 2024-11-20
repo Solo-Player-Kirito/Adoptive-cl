@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from "next/link"
 import Navbar from '@/components/NavBar'
+import Footer from '@/components/Footer'
 
 export default function ContactPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -47,7 +48,7 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-pink-50">
-      <Navbar /> 
+      <Navbar />
       <main className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
           <div className="text-center mb-6">
@@ -107,19 +108,7 @@ export default function ContactPage() {
           )}
         </div>
       </main>
-      <footer className="py-6 w-full shrink-0 bg-white border-t border-pink-200">
-        <div className="container px-4 md:px-6 mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-pink-600 text-center sm:text-left">© 2024 ADOPTIVE. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/terms">
-              Terms of Service
-            </Link>
-            <Link className="text-xs hover:underline underline-offset-4 text-pink-600 hover:text-pink-700" href="/privacy">
-              Privacy
-            </Link>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

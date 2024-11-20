@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from "next/link"
 import { Heart, Plus, Trash2 } from 'lucide-react'
+import Footer from '@/components/Footer'
 
 export default function AddOrphanagePage() {
   const [orphanage, setOrphanage] = useState({
@@ -18,12 +19,14 @@ export default function AddOrphanagePage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target
     setOrphanage(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleMediaLinkChange = (index: number, value: string) => {
+  const handleMediaLinkChange = (index, value) => {
     const newMediaLinks = [...orphanage.media_links]
     newMediaLinks[index] = value
     setOrphanage(prev => ({ ...prev, media_links: newMediaLinks }))
@@ -33,28 +36,45 @@ export default function AddOrphanagePage() {
     setOrphanage(prev => ({ ...prev, media_links: [...prev.media_links, ''] }))
   }
 
-  const removeMediaLink = (index: number) => {
+  const removeMediaLink = (index) => {
     const newMediaLinks = orphanage.media_links.filter((_, i) => i !== index)
     setOrphanage(prev => ({ ...prev, media_links: newMediaLinks }))
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setSuccess('')
 
-    // input validation
+    // Input validation
     if (!orphanage.name || !orphanage.email || !orphanage.phone || !orphanage.address) {
       setError('Please fill in all required fields.')
       return
     }
 
     try {
-        // API call to add orphanage
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      const token = localStorage.getItem('authTokenAdmin')
+      if (!token) {
+        throw new Error('Unauthorized. Please log in.')
+      }
 
-      console.log('Orphanage added:', orphanage)
+      const response = await fetch(`${apiUrl}/admin/orphanages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(orphanage)
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to add orphanage. Please try again.')
+      }
+
+      const result = await response.json()
       setSuccess('Orphanage added successfully!')
+      console.log('Orphanage added:', result)
+
       // Reset form after successful submission
       setOrphanage({
         name: '',
@@ -68,7 +88,7 @@ export default function AddOrphanagePage() {
       })
     } catch (error) {
       console.error('Error adding orphanage:', error)
-      setError('An error occurred while adding the orphanage. Please try again.')
+      setError(error.message || 'An error occurred while adding the orphanage.')
     }
   }
 
@@ -217,19 +237,7 @@ export default function AddOrphanagePage() {
           </div>
         </form>
       </main>
-      <footer className="py-6 w-full shrink-0 bg-white border-t border-blue-200">
-        <div className="container px-4 md:px-6 mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-blue-600 text-center sm:text-left">© 2024 ADOPTIVE. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
-            <Link className="text-xs hover:underline underline-offset-4 text-blue-600 hover:text-blue-700" href="/terms">
-              Terms of Service
-            </Link>
-            <Link className="text-xs hover:underline underline-offset-4 text-blue-600 hover:text-blue-700" href="/privacy">
-              Privacy
-            </Link>
-          </nav>
-        </div>
-      </footer>
+     <Footer /> 
     </div>
   )
 }
