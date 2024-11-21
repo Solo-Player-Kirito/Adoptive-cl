@@ -1,3 +1,3 @@
-const apiUrl = "http://localhost:8000" 
+const apiUrl = "https://adp-api.alanj.live" 
 
 export default apiUrl
