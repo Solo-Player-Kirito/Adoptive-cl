@@ -4,25 +4,26 @@ import { useState } from 'react'
 import Link from "next/link"
 import { Heart } from "lucide-react"
 import Footer from '@/components/Footer'
+import apiUrl from '@/app/apiUrls'
 
 export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
   }
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event) {
     event.preventDefault()
     setIsLoading(true)
     setError('')
     setSuccess(false)
 
     const formData = new FormData(event.currentTarget)
-    const email = formData.get('email') as string
+    const email = formData.get('email')
 
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.')
@@ -31,8 +32,6 @@ export default function ForgotPasswordPage() {
     }
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL // Use your API base URL
-
       const response = await fetch(`${apiUrl}/forgot-password`, {
         method: 'POST',
         headers: {
@@ -49,7 +48,7 @@ export default function ForgotPasswordPage() {
       console.log('Password reset response:', data)
 
       setSuccess(true)
-    } catch (error: any) {
+    } catch (error) {
       console.error('Password reset error:', error)
       setError(error.message || 'An error occurred. Please try again.')
     } finally {

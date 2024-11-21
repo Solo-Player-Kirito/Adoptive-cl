@@ -30,10 +30,10 @@ export default function AdminNavbar() {
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-center p-4 lg:p-0 border-t lg:border-none border-blue-200">
           <Link
             className="text-sm font-medium hover:text-blue-600 hover:underline underline-offset-4"
-            href="/"
-            onClick={() => setIsNavOpen(false)} // Close menu on navigation
+            href="/admin/dashboard/users"
+            onClick={() => setIsNavOpen(false)} 
           >
-            Home
+            Users
           </Link>
           <Link
             className="text-sm font-medium hover:text-blue-600 hover:underline underline-offset-4"

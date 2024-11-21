@@ -5,18 +5,8 @@ import Link from "next/link"
 import { Search, MapPin } from "lucide-react"
 import Navbar from '@/components/NavBar'
 import Footer from '@/components/Footer'
-
-export const formatTime = (timeString) => {
-  const [hours, minutes] = timeString.split(':').map(Number)
-  const date = new Date()
-  date.setHours(hours, minutes)
-
-  return new Intl.DateTimeFormat('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-  }).format(date)
-}
+import apiUrl from '../apiUrls'
+import formatTime from '../formatTime'
 
 export default function OrphanageSearchPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -34,7 +24,7 @@ export default function OrphanageSearchPage() {
           return
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orphanages`, {
+        const response = await fetch(`${apiUrl}/orphanages`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

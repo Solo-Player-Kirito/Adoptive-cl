@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Link from "next/link"
 import { Heart, MapPin, Phone, Calendar, Clock } from "lucide-react"
-import { formatTime } from '../search/page'
+import formatTime from '../formatTime'
 import Navbar from '@/components/NavBar'
 import Footer from '@/components/Footer'
+import apiUrl from '../apiUrls'
 
 
 
@@ -30,7 +30,7 @@ export default function OrphanageBookingContent() {
           setIsLoading(false)
           return
         }
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orphanages/${idParam}`, {
+        const response = await fetch(`${apiUrl}/orphanages/${idParam}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -87,7 +87,7 @@ export default function OrphanageBookingContent() {
         return
       }
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/schedule`, {
+      const response = await fetch(`${apiUrl}/schedule`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

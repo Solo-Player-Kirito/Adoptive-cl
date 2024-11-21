@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import { Heart } from "lucide-react"
 import Footer from '@/components/Footer'
+import apiUrl from '@/app/apiUrls'
 
 export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -62,7 +63,7 @@ export default function SignupPage() {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
+      const response = await fetch(`${apiUrl}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

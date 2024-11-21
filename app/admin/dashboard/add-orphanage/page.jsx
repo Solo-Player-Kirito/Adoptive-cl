@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from "next/link"
 import { Heart, Plus, Trash2 } from 'lucide-react'
 import Footer from '@/components/Footer'
+import apiUrl from '@/app/apiUrls'
 
 export default function AddOrphanagePage() {
   const [orphanage, setOrphanage] = useState({
@@ -19,7 +20,6 @@ export default function AddOrphanagePage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   const handleInputChange = (e) => {
     const { name, value } = e.target

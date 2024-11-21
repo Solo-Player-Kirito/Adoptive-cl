@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import Link from "next/link"
-import { User, Mail, Phone, Calendar, Edit, Eye, EyeOff } from 'lucide-react'
+import { User, Mail, Phone, Calendar, Eye, EyeOff } from 'lucide-react'
 import Navbar from '@/components/NavBar'
 import { useRouter } from 'next/navigation'
 import Footer from '@/components/Footer'
+import apiUrl from '../apiUrls'
 
 export default function UserProfilePage() {
 
@@ -32,7 +33,7 @@ export default function UserProfilePage() {
       }
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
+        const response = await fetch(`${apiUrl}/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -54,7 +55,7 @@ export default function UserProfilePage() {
 
     const fetchSchedulings = async (token) => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/schedules`, {
+        const response = await fetch(`${apiUrl}/schedules`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +89,7 @@ export default function UserProfilePage() {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/change-password`, {
+      const response = await fetch(`${apiUrl}}/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

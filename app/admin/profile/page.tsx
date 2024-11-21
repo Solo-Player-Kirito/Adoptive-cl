@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from "next/link"
 import { User, Mail, Eye, EyeOff } from 'lucide-react'
 import AdminNavbar from '@/components/AdminNavBar'
 import Footer from '@/components/Footer'

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import { Heart } from "lucide-react"
 import Footer from '@/components/Footer'
+import apiUrl from '@/app/apiUrls'
 
 export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -26,7 +27,7 @@ export default function AdminLoginPage() {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`, {
+      const response = await fetch(`${apiUrl}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

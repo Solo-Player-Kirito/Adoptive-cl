@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from "next/link"
 import { Plus, Edit, Trash2, Calendar } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import AdminNavbar from '@/components/AdminNavBar'
 import Footer from '@/components/Footer'
+import apiUrl from '@/app/apiUrls'
 
 export default function AdminOrphanagesPage() {
     const router = useRouter()
@@ -16,8 +16,6 @@ export default function AdminOrphanagesPage() {
     const [newOrphanage, setNewOrphanage] = useState({ name: '', location: '', phone: '' })
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
-
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     console.log(isLoading);
     console.log(newOrphanage);
@@ -48,7 +46,7 @@ export default function AdminOrphanagesPage() {
         }
 
         fetchOrphanages()
-    }, [apiUrl])
+    }, [])
 
     const handleDelete = async (id) => {
         try {

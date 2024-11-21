@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/profile/page.jsx", "app/search/page.jsx", "app/admin/dashboard/add-orphanage/page.jsx", "app/admin/dashboard/page.jsx", "app/schedule/OrphanageBookingContent.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/profile/page.jsx", "app/search/page.jsx", "app/admin/dashboard/add-orphanage/page.jsx", "app/admin/dashboard/page.jsx", "app/schedule/OrphanageBookingContent.jsx", "app/auth/forgot-password/page.jsx", "app/admin/forgot-password/page.jsx"],
   "exclude": ["node_modules"]
 }

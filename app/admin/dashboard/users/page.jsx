@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from "next/link"
 import { Heart, Search, User, Mail, Phone, ChevronDown, ChevronUp } from 'lucide-react'
 import Footer from '@/components/Footer'
+import apiUrl from '@/app/apiUrls'
 
 export default function AdminUsersPage() {
     const [users, setUsers] = useState([])
@@ -12,8 +13,6 @@ export default function AdminUsersPage() {
     const [sortDirection, setSortDirection] = useState('asc')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(true)
-
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     // Fetch users from API
     useEffect(() => {
@@ -43,7 +42,7 @@ export default function AdminUsersPage() {
         }
 
         fetchUsers()
-    }, [apiUrl])
+    }, [])
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value)
