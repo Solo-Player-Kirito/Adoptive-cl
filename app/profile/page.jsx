@@ -89,7 +89,7 @@ export default function UserProfilePage() {
     }
 
     try {
-      const response = await fetch(`${apiUrl}}/change-password`, {
+      const response = await fetch(`${apiUrl}/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
